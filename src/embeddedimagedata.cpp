@@ -109,6 +109,7 @@ EmbeddedImageData::Private::getFrontCover(const QString &fileUrl,
         if (!mp4File.tag() || mp4File.tag()->isEmpty()) {
             return QByteArray();
         }
+#if TAGLIB_MINOR_VERSION > 9
         TagLib::MP4::Item coverArtItem = mp4File.tag()->item("covr");
         if (coverArtItem.isValid())
         {
@@ -116,6 +117,9 @@ EmbeddedImageData::Private::getFrontCover(const QString &fileUrl,
             TagLib::MP4::CoverArt& frontCover = coverArtList.front();
             return QByteArray(frontCover.data().data(), frontCover.data().size());
         }
+#else
+	// FIXME: Unimplemented
+#endif
 
     } else if (mimeType == QStringLiteral("audio/x-musepack")) {
 
@@ -156,13 +160,21 @@ EmbeddedImageData::Private::getFrontCover(const QString &fileUrl,
         if (mimeType == QStringLiteral("audio/ogg") || mimeType == QStringLiteral("audio/x-vorbis+ogg")) {
             TagLib::Ogg::Vorbis::File oggFile(&stream, true);
             if (oggFile.tag() && !oggFile.tag()->isEmpty()) {
+#if TAGLIB_MINOR_VERSION > 9
                 lstPic = oggFile.tag()->pictureList();
+#else
+		// FIXME: Unimplemented
+#endif
             }
         }
         if (mimeType == QStringLiteral("audio/opus") || mimeType == QStringLiteral("audio/x-opus+ogg")) {
             TagLib::Ogg::Opus::File opusFile(&stream, true);
             if (opusFile.tag() && !opusFile.tag()->isEmpty()) {
+#if TAGLIB_MINOR_VERSION > 9
                 lstPic = opusFile.tag()->pictureList();
+#else
+		// FIXME: Unimplemented
+#endif
             }
         }
         if (!lstPic.isEmpty()) {

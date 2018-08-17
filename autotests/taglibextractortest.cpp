@@ -257,6 +257,7 @@ void TagLibExtractorTest::testMP3Rating_data()
     QTest::addColumn<QString>("path");
     QTest::addColumn<int>("expectedRating");
 
+#if QT_VERSION >= 0x050900
     QTest::addRow("WMP")
         << QFINDTESTDATA("samplefiles/mp3_rating/testWMP.mp3")
         << 0 ;
@@ -308,6 +309,9 @@ void TagLibExtractorTest::testMP3Rating_data()
     QTest::addRow("MM10")
         << QFINDTESTDATA("samplefiles/mp3_rating/testMM10.mp3")
         << 10 ;
+#else
+    // FIXME: Unimplemented
+#endif
 }
 
 void TagLibExtractorTest::testMP3Rating()
@@ -336,6 +340,7 @@ void TagLibExtractorTest::testNoMetadata_data()
     QTest::addColumn<QList<Property::Property>>("expectedKeys");
     QTest::addColumn<QString>("failMessage");
 
+#if QT_VERSION >= 0x050900
     QTest::addRow("mp3")
         << QFINDTESTDATA("samplefiles/no-meta/test.mp3")
         << QStringLiteral("audio/mp3")
@@ -371,6 +376,9 @@ void TagLibExtractorTest::testNoMetadata_data()
         << QStringLiteral("audio/x-musepack")
         << expectedKeys << QString()
         ;
+#else
+    // FIXME: Unimplemented
+#endif
 
 }
 
